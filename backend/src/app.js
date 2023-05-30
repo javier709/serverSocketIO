@@ -18,6 +18,10 @@ const io = require('socket.io')(httpServer, {
 
 // * Import Routes
 
+const userRoutes = require('./router/user.js');         // *  Hago disponibles los servicios del usuario
+const messageRoutes = require('./router/message.js');   // * Hago disponibles los servicios de mensajes
+
+
 app.use(express.urlencoded({extended: true}));        
 app.use(express.json());                    // * Los datos enviados en una solicitud, los recupero en formato Json
 app.use(express.static('src/uploads'));     // * Para poder utilizar/visualizar los archivos que se van a almacenar en uploads
@@ -31,6 +35,12 @@ app.use((req, res, next) => {
 });
 
 // * Export Routes
+
+const basePath = `/${API_NAME}/${API_VERSION}`;
+console.log(basePath);
+
+app.use(basePath, userRoutes);
+app.use(basePath,messageRoutes);
 
 // * Escucho los eventos de socket
 
