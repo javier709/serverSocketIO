@@ -47,7 +47,7 @@ module.exports = {
 function _getMessages(req,res){
     Message.get(req.con, (error, rows) => {
         if(error) {
-            res.status(500).send ({response: 'Ha ocurrido un error listando los usuarios'});        // * Paso la respuesta como un objeto, para poder consumirlo desde el front
+            res.status(500).send({response: 'Ha ocurrido un error listando los usuarios'});        // * Paso la respuesta como un objeto, para poder consumirlo desde el front
         } else {
             const { io } = req;
             io.emit('messages', rows);                  // * Cada vez que necesito recuperar los mensajes, se emite un evento messages, donde puedo recuperar todos los registros

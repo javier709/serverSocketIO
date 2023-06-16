@@ -1,6 +1,6 @@
 // * Modelos para las solicitudes a la base de datos.
 
-const { hasPassword } = require("../utils/auth");
+const { hashPassword } = require("../utils/auth.js");
 
 module.exports = {
 
@@ -13,7 +13,7 @@ module.exports = {
     },
 
     getByEmail: (con, email, callback) => {
-        con.query(`SELECT * FROM users WHERE id = '${email}'`, callback);        // * El email es un string, se coloca entre ''
+        con.query(`SELECT * FROM users WHERE email = '${email}'`, callback);        // * El email es un string, se coloca entre ''
     },
 
     // * Script para crear un usuario, información que se recibe y la que se envía a la base de datos
@@ -24,7 +24,7 @@ module.exports = {
         firstName = '${data.firstName}',
         lastName = '${data.lastName}',
         email = '${data.email.toLowerCase()}',
-        password = '${hasPassword(data.password)}',
+        password = '${hashPassword(data.password)}',
         roleId = '${typeof data.roleId !== 'undefined' ? data.roleId : 2}',
         img = '${data.img}',
         active = '${typeof data.active !== 'undefined' ? data.active : 1}'

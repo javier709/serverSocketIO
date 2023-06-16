@@ -4,7 +4,9 @@
 module.exports = {
 
     get: (con, callback) => {
-        con.query('SELECT * FROM messages', callback);
+        con.query(`SELECT content, messages.id as id,
+        userId, date, firstName, lastName FROM messages
+        INNER JOIN users ON messages.userId = users.id`, callback);
     },
 
     getById: (con, id, callback) => {

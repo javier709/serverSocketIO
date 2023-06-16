@@ -34,10 +34,8 @@ module.exports = {
             } else {
                 res.status(200).send({response:row});          // * Paso la respuesta como un objeto, para poder consumirlo desde el front
             }
-          
         });
     },
-
 
     login: (req, res) => {
         const {email,password} = req.body;     // * Recupero el email y password del body
@@ -48,14 +46,14 @@ module.exports = {
                 const userData = rows[0];
                 console.log(userData);
 
-                // * Validaciones
+                // * Validaciones, comparo las contraseñas que me pasa el usuario desde el formulario Login, con mi base de datos
            
                 bcrypt.compare(password, userData.password, (error, check) => {
                     if(error) return res.status(500).send({response: 'Error en el servidor'});
                     if(!check) return res.status(400).send({response: 'Datos incorrectos'});
                     if(!userData.active) return res.status(401).send({response: 'Usuario inactivo'});
-                    delete userData.password;
-                    res.status(200).send({
+                    delete userData.password;                       // * Elimino el password para no enviarlo en la solicitud, solo envío el password hasheado
+                    res.status(200).send({                          // * Si todo es correcto, envío un objeto con el token de acceso del usuario
                         response: {
                             token: createAccessToken(userData),
                             refresh:createRefreshToken(userData)              // * Datos del usuario

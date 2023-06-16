@@ -7,11 +7,11 @@ const app = express.Router();
 
 // * Llamo a las funciones de mi controlador para listar, crear y eliminar mensajes
 
-app.get('/message', userAuthenticated ,messageController.index);        // * Verifico que el usuario esté autenticado para realizar la petición
+app.get('/messages', userAuthenticated ,messageController.index);        // * Verifico que el usuario esté autenticado para realizar la petición
 
-app.post('/message/create',userAuthenticated ,messageController.store);
+app.post('/messages/create',userAuthenticated ,messageController.store);
 
-app.delete('/message/:id', userAuthenticated , messageController.destroy);
+app.delete('/messages/:id', userAuthenticated , messageController.destroy);
 
 module.exports = app;
 

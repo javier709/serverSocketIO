@@ -11,7 +11,7 @@ const httpServer = http.createServer(app);
 
 const io = require('socket.io')(httpServer, {
     cors: {
-        origin: 'http://localhost:4200'
+        origin: 'http://localhost:4200'  // * Origen de donde vamos a querer escuchar eventos
     }
 });
 
@@ -24,7 +24,7 @@ const messageRoutes = require('./router/message.js');   // * Hago disponibles lo
 
 app.use(express.urlencoded({extended: true}));        
 app.use(express.json());                    // * Los datos enviados en una solicitud, los recupero en formato Json
-app.use(express.static('src/uploads'));     // * Para poder utilizar/visualizar los archivos que se van a almacenar en uploads
+app.use(express.static('src/uploads.js'));     // * Para poder utilizar/visualizar los archivos que se van a almacenar en uploads
 app.use(cors());
 
 
@@ -37,14 +37,16 @@ app.use((req, res, next) => {
 // * Export Routes
 
 const basePath = `/${API_NAME}/${API_VERSION}`;
-console.log(basePath);
-
 app.use(basePath, userRoutes);
-app.use(basePath,messageRoutes);
+app.use(basePath, messageRoutes);
 
 // * Escucho los eventos de socket
 
 io.on('connect', (socket) =>{
+    socket.on('typing', (data) => {
+        io.emit('listening', data); // * Escucho el evento del frontend(typing) y lo emito con la data del usuario
+    });
+
     socket.on('disconnect', () => {
         console.log('Disconnect User');
     })

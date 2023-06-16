@@ -1,5 +1,5 @@
 // * Los middlewares son funciones intermedias que deciden habilitar o no funciones finales
-
+const { decodeToken } = require("../utils/jwt.js")
 // * Función que verifica que el usuario esté autenticado
 
 function userAuthenticated(req, res, next) {
@@ -8,10 +8,11 @@ function userAuthenticated(req, res, next) {
     
     // * Obtengo el token de la cabecera
 
-    const token = authorization.replace('Bearer', '');
+    const token = authorization.replace('Bearer ', '');
 
     const userData = decodeToken(token);        // * Los datos del usuario vienen en el token, se decodifican y se guardan en la constante userData
-    try{
+    
+    try{ 
         const {exp} = userData;         // * Extraigo la fecha de expiración de token
         const currentTime = new Date().getTime();
         if(exp < currentTime) return res.status(400).send({response: 'El token expiró'});   // * Si el token expiró, retornamos

@@ -24,13 +24,12 @@ function getFilePath(file){
 
 function unlinkFile(path) {
     try {
-        if (!path) throw new Error ('No hay imagen para eliminar');
+        if (!path) throw new Error('No hay imagen para eliminar');
         fs.unlinkSync(`src/uploads/${path}`);
     } catch (error) {
         console.log(error);
     }
-}
-
+} 
 
 module.exports = {
     hashPassword,
